@@ -1,2 +1,2 @@
-# galayachtfood
-web developer
+# PDO SQL query
+
