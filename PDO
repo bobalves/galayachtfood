@@ -1,1 +1,45 @@
-tes
+if(isset($_POST["imagecrp"]))
+{
+ $data = $_POST["imagecrp"];
+
+ $image_array_1 = explode(";", $data);
+
+ $image_array_2 = explode(",", $image_array_1[1]);
+
+ $data = base64_decode($image_array_2[1]);
+
+ $imageName = 'cimg'.date('d-m-Y').'_'.time() . '.jpg';
+ 
+ $_SESSION['img_sec']=$imageName;
+ 
+ $dir_to_save = "../uploads/cat_image/";
+
+ file_put_contents($dir_to_save.$imageName, $data);
+ 
+ 
+ ///////// compress the img resulation 
+ function compress($source, $destination, $quality) {
+    $info = getimagesize($source);
+    if ($info['mime'] == 'image/jpg') 
+        $image = imagecreatefromjpeg($source);
+
+    elseif ($info['mime'] == 'image/gif') 
+        $image = imagecreatefromgif($source);
+
+    elseif ($info['mime'] == 'image/png') 
+        $image = imagecreatefrompng($source);
+
+    imagejpeg($image, $destination, $quality);
+
+    return $destination;
+}
+ 
+$source_img = SITE_WS_PATH.'/uploads/cat_image/'.$imageName;
+$destination_img = 'cimg'.date('d-m-Y').'_'.time() . '.jpg';
+
+$d = compress($source_img, $dir_to_save.$destination_img, 90);
+  
+ echo '<img src="'.SITE_WS_PATH.'/uploads/cat_image/'.$imageName.'" class="img-thumbnail" />';
+}
+
+
